@@ -1,17 +1,18 @@
-import Navbar from './components/Navbar';
-import { useState } from 'react'
 import './index.css'
-import "tailwindcss";
+import Navbar from './components/Navbar';
+import Header from './components/Header';
+import Footer from './components/Footer';
+import EpubArea from './components/EpubArea';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
       <>
-        <Navbar className="h-full" />
-        <p>Hello, man!</p>
+        <Header />
+        <Navbar />
+        <EpubArea />
+        <Footer />
       </>
       )
 }
 
-export default App
+export default App;

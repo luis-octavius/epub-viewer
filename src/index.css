@@ -14,4 +14,29 @@ body {
   border: 0;
 }
 
+#root {
+  display: grid;
+  grid-template: 20% 70% 10% / 20% 70% 10%;
+  width: inherit;
+  height: inherit;
+}
 
+.header {
+  grid-area: 1 / 1 / 1 / 4;
+}
+
+.epub {
+  grid-area: 2 / 2 / 2 / 4;
+}
+
+.navbar {
+  grid-area: 2 / 2 / 3 / 1;
+}
+
+.footer {
+  grid-area: 3 / 1 / 3 / 4;
+}
+
+.h3-link {
+  @apply pl-5 py-10 cursor-pointer;
+}

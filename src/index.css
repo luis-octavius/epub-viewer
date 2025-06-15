@@ -5,6 +5,7 @@
   --sidebar-color: rgb(199, 217, 221);
   --header-color: rgb(213, 229, 213);
   --link-color: rgb(238, 241, 218);
+  --base-font: "monospace";
 }
 
 body {
@@ -52,4 +53,8 @@ body {
 
 input[type="file"] {
   display: none;
+}
+
+.navigate {
+  @apply w-5 h-5 rounded-b-full bg-[var(--header-color)] text-xl
 }

@@ -4,24 +4,35 @@ import ePub from "epubjs";
 export default function EpubArea() {
     const [isFileUpload, setIsFileUpload] = useState(false);
     const [book, setBook] = useState(null);
+    const [rendition, setRendition] = useState(null);
+    const [displayed, setDisplayed] = useState(null);
 
     const getFile = () => {
         const fileUpload = document.getElementById("file").files[0];
         setIsFileUpload(true);
         let book = ePub(fileUpload);
-        console.log(book);
         setBook(book);
     }
 
     const loadEbook = () => {
-        const rendition = book.renderTo("area", {width: "100%", height: 400});
+        const useRendition = book.renderTo("area", {
+            method: "paginate", 
+            width: "100%", 
+            height: "100%",
+            manager: "continuous"
+        });
+        setRendition(useRendition);
         console.log("Book: ", book);
-        console.log("Rendition: ", rendition)
+        console.log("Rendition: ", useRendition);
+    }
+
+    const renderBook = () => {
         rendition.display();
     }
 
+
     return (
-        <div className="flex flex-col items-center justify-center epub pl-5 bg-[var(--main-bg)] ">
+        <div className="flex flex-col items-center justify-center epub bg-[var(--main-bg)]">
             {!isFileUpload ? (
                 <form 
                 method="post"
@@ -29,7 +40,7 @@ export default function EpubArea() {
                 <label 
                     htmlFor="file"
                     className="button"
-                >Choose Epub file to upload</label>
+                >Choose EPUB file to upload</label>
                 <input 
                     name="file"
                     id="file"
@@ -47,9 +58,36 @@ export default function EpubArea() {
             ) : (
                 <div
                     id="area"
-                    onLoad={loadEbook()} 
+                    onLoad={() => {
+                        loadEbook();
+                        renderBook();
+                    }}
                     className="w-full h-full"   
                 >
+                <div
+                    id="navigation"
+                    className="z-10 w-full bg-amber-50 flex justify-center self-end text-lg"
+                >
+                    <button
+                        id="prev"
+                        className="navigate"
+                        onClick={() => {
+                            rendition.prev();
+                        }}
+                    >
+                    ↼ 
+                    </button>
+                    <button
+                        id="next"
+                        className="navigate"
+                        onClick={() => {
+                            rendition.next();
+                        }}
+                    >
+                    ⇀
+                    </button>
+
+                </div>
                 </div>
             )}
         </div>

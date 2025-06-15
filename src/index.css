@@ -40,3 +40,16 @@ body {
 .h3-link {
   @apply pl-5 py-10 cursor-pointer;
 }
+
+.button {
+  transition: ease-in-out .8s linear;
+  @apply text-center bg-[var(--sidebar-color)] rounded-md w-full h-10 my-auto p-2 border-1 border-black cursor-pointer
+}
+
+.button:active {
+  transform: translateY(-2);
+}
+
+input[type="file"] {
+  display: none;
+}

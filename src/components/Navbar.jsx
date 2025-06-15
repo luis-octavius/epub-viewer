@@ -1,8 +1,8 @@
 export default function Navbar() {
   return (
-    <div className="navbar flex flex-col bg-[var(--sidebar-color)]">
+    <div className="navbar flex flex-col bg-[var(--sidebar-color)] font-mono">
       <h3 className="h3-link">Home</h3> 
-      <h3 className="h3-link">Other</h3>     
+      <h3 className="h3-link">Annotations</h3>     
     </div>
   )
 }

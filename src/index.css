@@ -52,7 +52,7 @@ input[type="file"] {
 }
 
 .navigate {
-  @apply w-5 h-5 rounded-b-full bg-[var(--header-color)] text-xl
+  @apply w-5 h-5 rounded-b-full bg-[var(--header-color)] text-xl my-auto 
 }
 
 .epub-view {

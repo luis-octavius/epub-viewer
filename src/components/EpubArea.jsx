@@ -4,20 +4,44 @@ import ePub from "epubjs";
 export default function EpubArea() {
     const [isFileUpload, setIsFileUpload] = useState(false);
     const [book, setBook] = useState(null);
+    const [currentPage, setCurrentPage] = useState("");
     const viewerRef = useRef(null);
+    const [metadata, setMetaData] = useState({ title: "", author: ""});
 
-    const getFile = () => {
-        const fileUpload = document.getElementById("file").files[0];
+    const getFile = (file) => {
+        if (!file) return;
+
         setIsFileUpload(true);
-        let actualBook = ePub(fileUpload);
-        setBook(actualBook);
-    }
+        const url = URL.createObjectURL(file);
+        const newBook = ePub(url);
+        setBook(newBook);
 
-    const loadEbook = () => {
-        const rendition = book.renderTo("area", { method:'paginate', width: '100%', height: '100%'})
-        viewerRef.current = rendition;
-        rendition.display();
-    }
+        newBook.renderTo(viewerRef.current, {
+            width: "100%",
+            height: "80vh",
+        });
+
+        newBook.loaded.metadata.then((meta) => {
+            setMetaData({
+                title: meta.title || "No Title",
+                author: meta.creator || "Uknown Author",
+            });
+        });
+
+        newBook.ready.then(() => {
+            newBook.renderTo(viewerRef.current);
+        });
+    };
+
+    const nextPage = () => book?.nextPage();
+    const prevPage = () => book?.prevPage();
+
+    useEffect(() => {
+        return () => {
+            if (book) book.destroy();
+        };
+    }, [book]);
+
     return (
         <div className="flex flex-col items-center justify-center epub bg-[var(--main-bg)]">
             {!isFileUpload ? (
@@ -33,7 +57,7 @@ export default function EpubArea() {
                     id="file"
                     type="file"
                     accept=".epub"
-                    onChange={()=> getFile()}
+                    onChange={(e) => getFile(e.target.files[0])}
                     />
                 {/* <button
                     className="w-15 bg-white rounded-md border-1 border-black p-1 m-1"
@@ -46,8 +70,7 @@ export default function EpubArea() {
                 <div
                     id="area"
                     ref={viewerRef}
-                    onLoad={loadEbook()}
-                    className="w-full h-full flex flex-col justify-center items-center"   
+                    className="w-full h-full flex flex-col justify-end"   
                 >
                 <div
                     id="navigation"
@@ -56,18 +79,14 @@ export default function EpubArea() {
                     <button
                         id="prev"
                         className="navigate"
-                        onClick={() => {
-                            rendition.prev();
-                        }}
+                        onClick={prevPage}
                     >
                     ↼ 
                     </button>
                     <button
                         id="next"
                         className="navigate"
-                        onClick={() => {
-                            rendition.next();
-                        }}
+                        onClick={nextPage}
                     >
                     ⇀
                     </button>

@@ -2,7 +2,6 @@ import { useState, useRef, useEffect } from "react";
 import ePub from "epubjs";
 
 export default function EpubArea() {
-    const [isFileUpload, setIsFileUpload] = useState(false);
     const [book, setBook] = useState(null);
     const [currentPage, setCurrentPage] = useState("");
     const viewerRef = useRef(null);
@@ -14,37 +13,40 @@ export default function EpubArea() {
         setIsFileUpload(true);
         const url = URL.createObjectURL(file);
         const newBook = ePub(url);
+        console.log(newBook);
         setBook(newBook);
+    };
 
-        newBook.renderTo(viewerRef.current, {
-            width: "100%",
-            height: "80vh",
-        });
-
-        newBook.loaded.metadata.then((meta) => {
+    const loadEbook = () => {
+        console.log("Is")
+        console.log(book)
+        book.loaded.metadata
+        .then((meta) => {
             setMetaData({
                 title: meta.title || "No Title",
                 author: meta.creator || "Uknown Author",
             });
+            console.log("Title: ", meta.author);
+            console.log("Author : ", meta.author);
         });
+        
 
-        newBook.ready.then(() => {
-            newBook.renderTo(viewerRef.current);
-        });
-    };
+        book.ready.then(() => {
+            book.renderTo(viewerRef.current, { width: "100%", height: "100%"});
+            console.log(book.renderTo(viewerRef.current))
+        })
+    }
 
     const nextPage = () => book?.nextPage();
     const prevPage = () => book?.prevPage();
 
     useEffect(() => {
-        return () => {
-            if (book) book.destroy();
-        };
+        if (book) loadEbook();
     }, [book]);
 
     return (
         <div className="flex flex-col items-center justify-center epub bg-[var(--main-bg)]">
-            {!isFileUpload ? (
+            {!book ? (
                 <form 
                 method="post"
                 className="flex flex-col items-center">

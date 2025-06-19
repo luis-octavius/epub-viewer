@@ -1,12 +1,39 @@
-# React + Vite
+# 📚 EPUB Viewer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project was created to read EPUB files online. The idea is that you can read, mark highlights, create notes about these highlights and share the notes in the web.
 
-Currently, two official plugins are available:
+## 🧰 Installation
+1. Clone the Repository
+```bash
+git clone git@github.com:luis-octavius/epub-viewer.git
+```
+2. Go to the folder
+```bash
+cd epub-viewer
+```
+3. Install dependencies
+```bash
+npm install
+```
+4. Build the Project
+```bash
+npm run build
+```
+5. Run
+```bash
+npm run dev
+```
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 👨‍💻Technologies
+![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
+![React Router](https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
 
-## Expanding the ESLint configuration
+### Library
+![EpubJS](https://img.shields.io/badge/epubjs-red)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Possible Improvements
+- [ ] Routing
+- [ ] Creation of Notes
+- [ ] Connection between the highlights in the book to notes
+

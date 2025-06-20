@@ -32,8 +32,12 @@ npm run dev
 ### Library
 ![EpubJS](https://img.shields.io/badge/epubjs-red)
 
-## Possible Improvements
+## Future Improvements
 - [ ] Routing
 - [ ] Creation of Notes
 - [ ] Connection between the highlights in the book to notes
+- [ ] Search Words in Ebook
+- [ ] Fullscreen mode
+- [ ] Change text size
+- [ ] Change themes
 

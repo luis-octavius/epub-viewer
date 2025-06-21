@@ -1,6 +1,5 @@
 @import "tailwindcss";
 
-
 :root {
   --main-bg: rgb(252, 216, 205);
   --sidebar-color: rgb(254, 235, 246);
@@ -50,22 +49,21 @@ body {
 }
 
 .button {
-  @apply text-center bg-[var(--sidebar-color)] rounded-2xl w-80 h-10 my-auto p-2 border-black cursor-pointer font-[var(--base-font)] shadow-cyan-950 shadow-2xl
+  @apply text-center bg-[var(--sidebar-color)] rounded-2xl w-80 h-10 my-auto p-2 border-black cursor-pointer font-[var(--base-font)] shadow-cyan-950 shadow-2xl;
 }
-
 
 input[type="file"] {
   display: none;
 }
 
 .navigate {
-  @apply flex justify-center items-center bg-[var(--link-color)] w-full mt-15
+  @apply flex justify-center items-center bg-[var(--link-color)] w-full mt-15;
 }
 
 .navigate-btns {
-  @apply rounded-4xl w-10 h-10 bg-[var(--sidebar-color)] mx-2 cursor-pointer
+  @apply rounded-4xl w-10 h-10 bg-[var(--sidebar-color)] mx-2 cursor-pointer;
 }
 
 .epub-view {
-  @apply flex flex-col justify-center items-center
+  @apply flex flex-col justify-center items-center;
 }

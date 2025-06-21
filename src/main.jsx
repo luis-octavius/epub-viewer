@@ -18,7 +18,10 @@ const router = createBrowserRouter([
             { path: "home", element: <Home /> },
             { path: "content", element: <Content /> },
             { path: "annotations", element: <Annotations /> },
-            { path: "epub", element: <Epub /> }
+            { path: "epub", element: <Epub />, loader: () => {
+                const savedState = localStorage.getItem('epubState');
+                return savedState ? JSON.parse(savedState) : null;
+            } }
         ],
     },
 ])

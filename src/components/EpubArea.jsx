@@ -1,11 +1,33 @@
 import { useState, useRef, useEffect } from "react";
 import ePub from "epubjs";
+import { useLoaderData } from 'react-router';
 
 export default function EpubArea() {
+    const savedState = useLoaderData();
     const [isFileUpload, setIsFileUpload] = useState(false);
     const [rendition, setRendition] = useState(null);
     const [book, setBook] = useState(null);
     const viewerRef = useRef(null);
+    const [isOpen, setIsOpen] = useState(false);
+    const [selectedValue, setSelectedValue] = useState(savedState?.theme || "");
+    const [font, setFont] = useState(savedState?.font || "140%");
+
+    useEffect(() => {
+        if (!rendition) return;
+
+        const savePosition = () => {
+          rendition.currentLocation().then(loc => {
+          localStorage.setItem('epubState', JSON.stringify({
+            currentCfi: loc.start.cfi,
+            font,
+            theme: selectedValue,
+        }));
+      });
+    };
+        
+    window.addEventListener('beforeunload', savePosition);
+    return () => window.removeEventListener('beforeunload', savePosition);
+    }, [font, selectedValue, rendition])
 
     useEffect(() => {
       if (book) { 
@@ -36,8 +58,11 @@ export default function EpubArea() {
 
 
     const loadEbook = (book) => {
+
         book.ready.
         then(() => {
+        const savedState = JSON.parse(localStorage.getItem('epubState')) || {};
+
         const useRendition = book.renderTo("area", {
         width: '100%',
         height: '100%',
@@ -48,6 +73,20 @@ export default function EpubArea() {
           'allow-popups'
         ]
       });
+
+      // Restaura a posição do ebook
+      useRendition.display(savedState.currentCfi || undefined);
+
+      // Restaurando o tema e a fonte
+      if (savedState.theme) {
+        useRendition.themes.select(savedState.theme);
+        setSelectedValue(savedState.theme);
+      }
+
+      if (savedState.font) {
+        useRendition.themes.fontSize(savedState.font);
+        setFont(savedState.font);
+      }
 
       useRendition.on('displayed', () => {
         const iframe = document.querySelector('iframe');
@@ -73,6 +112,12 @@ export default function EpubArea() {
         }
       });
 
+      useRendition.themes.register("dark", "themes.css");
+      useRendition.themes.register("light", "themes.css");
+      useRendition.themes.register("retro", "themes.css");
+
+      useRendition.themes.fontSize(font);
+
       useRendition.on("selected", function(cfiRange) {
         book.getRange(cfiRange).then(function (range) {
           let text;
@@ -94,6 +139,31 @@ export default function EpubArea() {
         console.error("Error loading book: ", error);
       });
   };
+
+  const handleToggle = () => {
+    setIsOpen(!isOpen);
+  }
+
+  const handleSelect = (value) => {
+    setSelectedValue(value);
+    rendition.themes.select(value);
+    setIsOpen(false);
+  }
+
+  const handleSize = (value) => {
+    const parsedFont = parseInt(font);
+    if (value == "-10" && parsedFont > 0) {
+      rendition.themes.fontSize(`${parsedFont - 10}%`);
+      setFont(`${parsedFont - 10}%`);
+      console.log(`${parsedFont - 10}%`)
+    } 
+    if (value == "+10" && parsedFont < 200) {
+      rendition.themes.fontSize(`${parsedFont + 10}%`);
+      setFont(`${parsedFont + 10}%`)
+      console.log(`${parsedFont + 10}%`);
+
+    }
+  }
 
     const prevPage = () => rendition?.prev();
     const nextPage = () => rendition?.next();
@@ -130,6 +200,18 @@ export default function EpubArea() {
                 <div
                     className="navigate"
                   >
+                    <button
+                      onClick={() => handleSize("-10")}
+                      className="navigate-btns"
+                    >
+                      -
+                    </button>
+                    <button
+                      onClick={() => handleSize("+10")}
+                      className="navigate-btns"
+                    >
+                      +
+                    </button>
                     <button 
                       onClick={prevPage}
                       onKeyDown={keyListener}
@@ -144,6 +226,23 @@ export default function EpubArea() {
                     >
                       ⭢
                     </button>
+                    <div
+                      className="flex flex-col border-2 z-10 border-black p-2 bg-[var(--sidebar-color)]"
+                    >
+                    <button
+                      onClick={handleToggle}
+                      className=""
+                    >
+                      {selectedValue || 'Theme'}
+                    </button>
+                    {isOpen && (
+                      <ul>
+                        <li onClick={() => handleSelect('dark')}>Dark</li>
+                        <li onClick={() => handleSelect('light')}>Light</li>
+                        <li onClick={() => handleSelect('retro')}>Retro</li>
+                      </ul>
+                    )}
+                    </div>
                   </div>
               </div>
             )}

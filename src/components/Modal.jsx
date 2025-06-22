@@ -12,9 +12,12 @@ export default function Modal({ openModal, closeModal, children }) {
   }, [openModal]);
 
   return (
-    <dialog ref={ref} onCancel={closeModal}>
-      {children}
-      <button onClick={closeModal}>Close</button>
+    <dialog ref={ref} onCancel={closeModal}  
+    >
+        {children}
+      <button 
+        className="ml-33"
+      onClick={closeModal}>Close</button>
     </dialog>
   );
 }

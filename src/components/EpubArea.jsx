@@ -14,23 +14,16 @@ export default function EpubArea() {
   const [font, setFont] = useState(savedState?.font || "140%");
 
   useEffect(() => {
-    if (!rendition) return;
-
-    const savePosition = () => {
-      rendition.currentLocation().then((loc) => {
+        return () => {
         localStorage.setItem(
           "epubState",
           JSON.stringify({
-            currentCfi: loc.start.cfi,
             font,
             theme: selectedValue,
+            currentCfi: rendition?.currentLocation()?.start?.cfi
           }),
         );
-      });
     };
-
-    window.addEventListener("beforeunload", savePosition);
-    return () => window.removeEventListener("beforeunload", savePosition);
   }, [font, selectedValue, rendition]);
 
   useEffect(() => {

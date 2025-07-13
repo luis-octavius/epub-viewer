@@ -15,9 +15,11 @@ export default function Modal({ openModal, closeModal, children }) {
     <dialog ref={ref} onCancel={closeModal}  
     >
         {children}
-      <button 
-        className="ml-33"
-      onClick={closeModal}>Close</button>
+        <div className="flex justify-center">
+          <button 
+            className="border-2 p-2 bg-[var(--sidebar-color)] rounded-lg"
+          onClick={closeModal}>Close</button>
+        </div>
     </dialog>
   );
 }

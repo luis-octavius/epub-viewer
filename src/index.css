@@ -19,7 +19,7 @@ body {
   display: grid;
   font-family: "Caprasimo", serif;
   font-weight: 700;
-  grid-template: 20% 70% 10% / 20% 70% 10%;
+  grid-template: 20% 70% 10% / 30% 60% 10%;
   width: inherit;
   height: inherit;
 }

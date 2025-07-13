@@ -1,21 +1,51 @@
 import { useEffect, useState } from "react";
 import { Form } from "react-router";
 import Modal from "./Modal";
-import axios from 'axios';
 
 export default function Annotations() {
+  const [note, setNote] = useState({
+    id: '',
+    title: '',
+    description: ''
+  })
   const [notes, setNotes] = useState([]);
   const [modal, setModal] = useState(false);
 
   useEffect(() => {
-    axios.get('http://localhost:3000/notes')
-      .then((response) => {
-        setNotes(response.data);
-      })
-      .catch((error) => {
-        console.error('Houve um erro de conexão: ', error)
-      })
-  }, []);
+    
+  }, [notes]);
+
+  const handleChange = (e) => {
+    console.log(e.target.value)
+    const title = e.target[0].value;
+    const description = e.target[1].value;
+    setNote({
+      ...note, 
+      title: title,
+      description: description 
+    })
+    console.log(note)
+  } 
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const title = e.target[0].value;
+    const description = e.target[1].value;
+
+    setNotes([...notes,
+      {
+        ...note,
+        id: Date.now()
+      }
+    ])    
+
+    setNote({
+      id: '',
+      title: '',
+      description: ''
+    })
+  }
+  
 
   return (
     <div className="flex flex-col items-center justify-center">
@@ -28,11 +58,14 @@ export default function Annotations() {
         closeModal={() => setModal(false)}
       >
         <Form 
-          className="flex flex-col"
-          action="/notes" method="post">
+          className="flex flex-col items-center text-xl"
+          action="/notes" method="post"
+          onSubmit={(e) => handleSubmit(e)}
+          onChange={(e) => handleChange(e)}
+          >
           <label className="block" htmlFor="title">Title
           </label>
-            <input name="title" placeholder="Note's name" type="text"></input>
+            <input className="w-full" name="title" placeholder="Note's name" type="text"></input>
 
           <label htmlFor="note">Note
           </label>
